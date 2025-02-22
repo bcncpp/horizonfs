@@ -1,0 +1,107 @@
+// File: hdfs_client.fbs
+
+namespace hdfs;
+
+// Enum to indicate the operation type.
+enum Operation: byte {
+  CREATE,
+  GET_FILE_INFO,
+  GET_BLOCK_LOCATIONS,
+  ADD_BLOCK,
+  COMPLETE,
+  APPEND,
+  DELETE,
+  RENAME,
+  SET_REPLICATION,
+  MKDIRS,
+  GET_CONTENT_SUMMARY
+}
+
+// Message for creating a file.
+table CreateMessage {
+  path: string;
+  replication: int;
+  blockSize: ulong;
+}
+
+// Message for getting file info.
+table GetFileInfoMessage {
+  path: string;
+}
+
+// Message for retrieving block locations.
+table GetBlockLocationsMessage {
+  path: string;
+  offset: ulong;
+  length: ulong;
+}
+
+// Message for adding a new block during file creation/writing.
+table AddBlockMessage {
+  path: string;
+  clientName: string;
+}
+
+// Message for completing the file write.
+table CompleteMessage {
+  path: string;
+  clientName: string;
+}
+
+// Message for appending data to an existing file.
+table AppendMessage {
+  path: string;
+  clientName: string;
+}
+
+// Message for deleting a file or directory.
+table DeleteMessage {
+  path: string;
+  recursive: bool;
+}
+
+// Message for renaming a file or directory.
+table RenameMessage {
+  src: string;
+  dst: string;
+}
+
+// Message for setting the replication factor.
+table SetReplicationMessage {
+  path: string;
+  replication: int;
+}
+
+// Message for creating directories.
+table MkdirsMessage {
+  path: string;
+  permissions: string;
+}
+
+// Message for fetching a directory’s content summary.
+table GetContentSummaryMessage {
+  path: string;
+}
+
+// Union that encapsulates all client request message types.
+union ClientRequestPayload {
+  CreateMessage,
+  GetFileInfoMessage,
+  GetBlockLocationsMessage,
+  AddBlockMessage,
+  CompleteMessage,
+  AppendMessage,
+  DeleteMessage,
+  RenameMessage,
+  SetReplicationMessage,
+  MkdirsMessage,
+  GetContentSummaryMessage
+}
+
+// The top-level request structure.
+table ClientRequest {
+  op: Operation;             // The operation being requested.
+  payload: ClientRequestPayload;  // The corresponding message payload.
+}
+
+root_type ClientRequest;

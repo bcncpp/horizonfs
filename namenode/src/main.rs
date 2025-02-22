@@ -1,3 +1,5 @@
+mod rpc;
+
 use tokio::net::TcpListener;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
