@@ -1,0 +1,3 @@
+# Project exclude paths
+/datanode/target/
+/namenode/target/
